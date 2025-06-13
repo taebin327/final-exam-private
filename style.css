@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Pretendard', sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+.team-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.id-card {
+  width: 300px;
+  aspect-ratio: 3 / 2; /* 비율 고정 */
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.id-card:hover .card-inner {
+  transform: scale(1.03);
+}
+
+.id-card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 앞면 */
+.card-front {
+  background-image: url('image.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* 뒷면 */
+.card-back {
+  background-color: #800000;
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  padding: 1rem;
+}
+
+.back-info {
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* 사진 영역 - 비율 기반 고정 위치 */
+.photo {
+  position: absolute;
+  top: 2.5%;
+  right: 0%;
+  width: 26%;
+  height: 67%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid white;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* 텍스트 정보 영역 - 비율 기반 고정 위치 */
+.info {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  right: 35%;
+  font-size: 0.75rem;
+  color: #111;
+  text-align: left;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.0);
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+  .id-card {
+    width: 90vw;
+  }
+
+  .info {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+  }
+
+  .back-info {
+    font-size: 0.8rem;
+  }
+}

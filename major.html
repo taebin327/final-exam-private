@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MySubjectList</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <style>
+      /* text-primary 색상을 밝은 민트색으로 변경 */
+      .text-primary {
+        color: #4dd0e1 !important;
+      }
+      /* btn-primary 버튼 색상 변경 */
+      .btn-primary {
+        background-color: #4dd0e1 !important;
+        border-color: #4dd0e1 !important;
+        color: #000; /* 버튼 글자색은 검은색으로 */
+      }
+      /* btn-primary 버튼 호버 색상 변경 */
+      .btn-primary:hover {
+        background-color: #26c6da !important;
+        border-color: #26c6da !important;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1 class="display-4 text-center">
+        <i class="bi bi-mortarboard text-primary"></i> My
+        <span class="text-primary">Subject</span>List
+      </h1>
+
+      <form id="book-form">
+        <div class="form-group">
+          <label for="title">Subject</label>
+          <input type="text" id="title" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="author">Professor</label>
+          <input type="text" id="author" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="isbn">Classroom</label>
+          <input type="text" id="isbn" class="form-control" />
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <input type="submit" value="Add Subject" class="btn btn-primary" />
+        </div>
+      </form>
+
+      <!-- 전체 초기화 버튼 -->
+      <div class="d-grid gap-2 mt-2">
+        <button id="clear-all" class="btn btn-danger">전체 초기화</button>
+      </div>
+
+      <!-- tttt.html로 돌아가는 버튼 -->
+      <div class="d-grid gap-2 mt-2">
+        <a href="tttt.html" class="btn btn-secondary">시간표로 돌아가기</a>
+      </div>
+
+      <table class="table table-striped mt-4">
+        <thead class="table-dark">
+          <tr>
+            <th>Subject</th>
+            <th>Professor</th>
+            <th>Classroom</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody id="book-list"></tbody>
+      </table>
+    </div>
+
+    <script src="main1.js"></script>
+  </body>
+</html>
