@@ -23,7 +23,7 @@ h1 {
 
 .id-card {
   width: 300px;
-  aspect-ratio: 3 / 2; /* ºñÀ² °íÁ¤ */
+  aspect-ratio: 3 / 2; /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
   perspective: 1000px;
   cursor: pointer;
 }
@@ -55,14 +55,14 @@ h1 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* ¾Õ¸é */
+/* ï¿½Õ¸ï¿½ */
 .card-front {
   background-image: url('image.png');
   background-size: cover;
   background-position: center;
 }
 
-/* µÞ¸é */
+/* ï¿½Þ¸ï¿½ */
 .card-back {
   background-color: #800000;
   color: #fff;
@@ -79,7 +79,7 @@ h1 {
   line-height: 1.6;
 }
 
-/* »çÁø ¿µ¿ª - ºñÀ² ±â¹Ý °íÁ¤ À§Ä¡ */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ */
 .photo {
   position: absolute;
   top: 2.5%;
@@ -90,10 +90,10 @@ h1 {
   background-position: center;
   border: 2px solid white;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* ÅØ½ºÆ® Á¤º¸ ¿µ¿ª - ºñÀ² ±â¹Ý °íÁ¤ À§Ä¡ */
+/* ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ */
 .info {
   position: absolute;
   bottom: 5%;
@@ -103,12 +103,12 @@ h1 {
   color: #111;
   text-align: left;
   line-height: 1.4;
-  background: rgba(255, 255, 255, 0.0);
+  background: rgba(255, 255, 255, 0);
   padding: 0.5rem;
   border-radius: 6px;
 }
 
-/* ¹ÝÀÀÇü ´ëÀÀ */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 @media (max-width: 768px) {
   .id-card {
     width: 90vw;
