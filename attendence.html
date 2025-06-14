@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>강의실 좌석 배치</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .course-info,
+      .stage,
+      .legend {
+        flex: 1;
+      }
+
+      .course-info {
+        line-height: 1.6;
+      }
+
+      .stage {
+        background-color: #444;
+        color: white;
+        padding: 20px;
+        font-size: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .legend {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        background-color: #ffffff;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 14px;
+        justify-content: center;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        border-radius: 4px;
+        border: 1px solid #888;
+      }
+
+      .summary {
+        margin: 20px auto;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        border-radius: 10px;
+        max-width: 900px;
+        text-align: center;
+      }
+
+      .summary h3 {
+        margin: 0;
+        cursor: pointer;
+        color: #2b6cb0;
+      }
+
+      .week-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .week-nav button {
+        padding: 0.5rem 1rem;
+        background-color: #2b6cb0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .classroom {
+        display: grid;
+        grid-template-columns: repeat(11, 1fr);
+        gap: 10px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .seat {
+        background-color: #eee;
+        border-radius: 6px;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        height: 110px;
+        justify-content: space-between;
+        border: 2px solid transparent;
+      }
+
+      .seat.present {
+        background-color: #d4f4dd;
+        border-color: #28a745;
+      }
+
+      .seat.absent {
+        background-color: #f8d7da;
+        border-color: #dc3545;
+      }
+
+      .seat.late {
+        background-color: #fff3cd;
+        border-color: #ffc107;
+      }
+
+      .seat.empty {
+        background-color: #f0f0f0;
+        border-color: #ccc;
+      }
+
+      .seat .photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        margin-top: 5px;
+      }
+
+      .seat .name {
+        font-size: 12px;
+        margin: 5px 0 0;
+        white-space: nowrap;
+      }
+
+      .desk {
+        width: 100%;
+        height: 12px;
+        background-color: #666;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .chair {
+        width: 60%;
+        height: 14px;
+        background-color: #999;
+        border-radius: 0 0 4px 4px;
+        margin-top: 2px;
+      }
+
+      .aisle {
+        grid-column: span 1;
+      }
+
+      .row-break {
+        height: 20px;
+        grid-column: span 11;
+      }
+
+      #popup,
+      #chartPopup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 2px solid #2b6cb0;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        width: 300px;
+      }
+
+      #popup button,
+      #chartPopup button {
+        margin-top: 10px;
+        padding: 6px;
+        width: 100%;
+        background-color: #2b6cb0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="course-info">
+        <strong>과목명:</strong> 웹프로그래밍<br />
+        <strong>강의실:</strong> C6-0833 호<br />
+        <strong>교시:</strong> 월요일 3,4교시
+      </div>
+      <div class="stage">
+        <a
+          href="index.html"
+          style="color: inherit; text-decoration: none; display: block"
+        >
+          웹프로그래밍
+        </a>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #d4f4dd"></div>
+          출석
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #f8d7da"></div>
+          결석
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #fff3cd"></div>
+          지각
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #f0f0f0"></div>
+          빈 자리
+        </div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="week-nav">
+        <button onclick="changeWeek(-1)">◀ 이전 주</button>
+        <div>
+          <strong id="currentWeek">14주차</strong> -
+          <span id="todayDate"></span>
+        </div>
+        <button onclick="changeWeek(1)">다음 주 ▶</button>
+      </div>
+      <h3 onclick="showChartPopup()">출결현황</h3>
+      <div id="statusSummary"></div>
+    </div>
+
+    <div class="classroom" id="classroom"></div>
+
+    <div id="popup">
+      <h3 id="popup-title">좌석 정보</h3>
+      <div id="popup-info"></div>
+      <input
+        type="password"
+        id="adminPassword"
+        placeholder="관리자 비밀번호 입력"
+      />
+      <select id="statusSelect">
+        <option value="present">출석</option>
+        <option value="absent">결석</option>
+        <option value="late">지각</option>
+      </select>
+      <button onclick="updateStatus()">상태 변경</button>
+      <button onclick="closePopup()">닫기</button>
+    </div>
+
+    <div id="chartPopup">
+      <canvas id="attendanceChart" width="300" height="300"></canvas>
+      <button onclick="closeChartPopup()">닫기</button>
+    </div>
+
+    <script>
+      const classroom = document.getElementById('classroom')
+      const popup = document.getElementById('popup')
+      const popupTitle = document.getElementById('popup-title')
+      const popupInfo = document.getElementById('popup-info')
+      const statusSelect = document.getElementById('statusSelect')
+      const adminPassword = document.getElementById('adminPassword')
+      const statusSummary = document.getElementById('statusSummary')
+      const todayDate = document.getElementById('todayDate')
+      const currentWeekDisplay = document.getElementById('currentWeek')
+      const chartPopup = document.getElementById('chartPopup')
+      const chartCanvas = document.getElementById('attendanceChart')
+
+      const totalRows = 9
+      const seatsPerRow = 10
+      const seatDataMap = {}
+      let seatNumber = 1
+      let currentSeatId = null
+      let currentWeek = 14
+
+      const attendanceRecords = {}
+      const seatStatusByWeek = {}
+
+      // Initialize random data for 1~16주차 with per-seat status
+      for (let w = 1; w <= 16; w++) {
+        attendanceRecords[w] = { total: 0, present: 0, late: 0, absent: 0 }
+        seatStatusByWeek[w] = {}
+      }
+
+      for (let row = 1; row <= totalRows; row++) {
+        for (let col = 1; col <= seatsPerRow + 1; col++) {
+          if (col === 6) {
+            const aisle = document.createElement('div')
+            aisle.className = 'aisle'
+            classroom.appendChild(aisle)
+            continue
+          }
+
+          const seatId = `${row}-${col > 6 ? col - 1 : col}`
+          const name = Math.random() > 0.3 ? `학생${seatNumber}` : ''
+          const id = name
+            ? `20230${seatNumber.toString().padStart(2, '0')}`
+            : ''
+          seatDataMap[seatId] = {
+            seatNo: seatId,
+            name,
+            id,
+            status: '',
+            photo: 'https://i.pravatar.cc/40?img=' + Math.random() * 10,
+          }
+
+          for (let w = 1; w <= 16; w++) {
+            if (!name) {
+              seatStatusByWeek[w][seatId] = 'empty'
+            } else {
+              const status =
+                Math.random() > 0.6
+                  ? 'absent'
+                  : Math.random() > 0.5
+                  ? 'late'
+                  : 'present'
+              seatStatusByWeek[w][seatId] = status
+              attendanceRecords[w].total++
+              attendanceRecords[w][status]++
+            }
+          }
+
+          const seat = document.createElement('div')
+          seat.className = 'seat'
+          seat.setAttribute('data-id', seatId)
+          seat.innerHTML = `
+          <div class="desk"></div>
+          <div class="photo" style="background-image: url('${
+            name ? seatDataMap[seatId].photo : ''
+          }')"></div>
+          <div class="name">${name || '빈 자리'}</div>
+          <div class="chair"></div>
+        `
+          seat.addEventListener('click', () => showPopup(seatId))
+          classroom.appendChild(seat)
+          seatNumber++
+        }
+      }
+
+      function updateClassroomView() {
+        document.querySelectorAll('.seat').forEach((seat) => {
+          const id = seat.dataset.id
+          seat.classList.remove('present', 'absent', 'late', 'empty')
+          const status = seatStatusByWeek[currentWeek][id]
+          seat.classList.add(status)
+        })
+      }
+
+      function updateDateInfo() {
+        todayDate.textContent = new Date().toISOString().split('T')[0]
+        currentWeekDisplay.textContent = `${currentWeek}주차`
+        const r = attendanceRecords[currentWeek]
+        statusSummary.textContent = `전체 인원: ${r.total}, 출석: ${r.present}, 지각: ${r.late}, 결석: ${r.absent}`
+        updateClassroomView()
+      }
+
+      function changeWeek(dir) {
+        currentWeek = Math.min(16, Math.max(1, currentWeek + dir))
+        updateDateInfo()
+      }
+
+      function showPopup(id) {
+        currentSeatId = id
+        const student = seatDataMap[id]
+        const status = seatStatusByWeek[currentWeek][id]
+        popupTitle.textContent = `좌석 ${id}`
+        popupInfo.innerHTML = student.name
+          ? `<p><strong>이름:</strong> ${
+              student.name
+            }</p><p><strong>학번:</strong> ${
+              student.id
+            }</p><p><strong>출석상태:</strong> ${statusText(status)}</p>`
+          : `<p>이 좌석은 비어 있습니다.</p>`
+        popup.style.display = 'block'
+      }
+
+      function closePopup() {
+        popup.style.display = 'none'
+      }
+
+      function updateStatus() {
+        if (adminPassword.value !== 'admin')
+          return alert('비밀번호가 올바르지 않습니다.')
+        const newStatus = statusSelect.value
+        const prev = seatStatusByWeek[currentWeek][currentSeatId]
+        if (prev !== newStatus) {
+          seatStatusByWeek[currentWeek][currentSeatId] = newStatus
+          attendanceRecords[currentWeek][prev]--
+          attendanceRecords[currentWeek][newStatus]++
+          updateDateInfo()
+          alert('출석 상태가 성공적으로 변경되었습니다.')
+        }
+        closePopup()
+      }
+
+      function statusText(s) {
+        return s === 'present'
+          ? '출석'
+          : s === 'absent'
+          ? '결석'
+          : s === 'late'
+          ? '지각'
+          : '빈 자리'
+      }
+
+      function showChartPopup() {
+        const r = attendanceRecords[currentWeek]
+        const chart = new Chart(chartCanvas, {
+          type: 'pie',
+          data: {
+            labels: ['출석', '지각', '결석'],
+            datasets: [
+              {
+                label: '출결현황',
+                data: [r.present, r.late, r.absent],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+              },
+            ],
+          },
+          options: { responsive: false, maintainAspectRatio: false },
+        })
+        chartPopup.style.display = 'block'
+      }
+
+      function closeChartPopup() {
+        chartPopup.style.display = 'none'
+      }
+
+      updateDateInfo()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대학교 시간표</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      a.back {
+        display: inline-block;
+        margin-top: 2rem;
+        text-decoration: none;
+        background: #003366;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 p-4">
+    <div class="max-w-7xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow">
+      <div
+        class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4"
+      >
+        <button
+          onclick="prevWeek()"
+          class="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
+        >
+          ◀ 이전주
+        </button>
+        <h1 id="weekTitle" class="text-lg md:text-xl font-bold text-center">
+          2025년 4월 14일 - 4월 20일
+        </h1>
+        <button
+          onclick="nextWeek()"
+          class="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
+        >
+          다음주 ▶
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table
+          class="min-w-full table-fixed border border-gray-300 text-sm md:text-base"
+        >
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="w-24 border p-2">시간</th>
+              <th class="border p-2">월</th>
+              <th class="border p-2">화</th>
+              <th class="border p-2">수</th>
+              <th class="border p-2">목</th>
+              <th class="border p-2">금</th>
+              <th class="border p-2">토</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 수업 상세 팝업 -->
+    <div
+      id="popup"
+      class="fixed inset-0 hidden bg-black bg-opacity-40 flex items-center justify-center z-50"
+    >
+      <div class="bg-white p-6 rounded shadow-md w-11/12 md:w-96 relative">
+        <button
+          onclick="closePopup()"
+          class="absolute right-3 top-2 text-gray-500 text-lg"
+        >
+          ✖
+        </button>
+        <h2 id="popupTitle" class="text-xl font-bold mb-2">수업명</h2>
+        <p id="popupContent">수업 설명</p>
+      </div>
+    </div>
+
+    <script>
+      const times = [
+        '09:10',
+        '10:10',
+        '11:10',
+        '12:10',
+        '13:10',
+        '14:10',
+        '15:10',
+        '16:10',
+        '17:10',
+      ]
+
+      const classes = [
+        {
+          day: 1,
+          period: 2,
+          length: 2,
+          name: '웹프로그래밍',
+          detail: 'HTML, CSS, JS 기초',
+        },
+        {
+          day: 3,
+          period: 0,
+          length: 2,
+          name: '웹프로그래밍',
+          detail: 'HTML, CSS, JS 기초',
+        },
+      ]
+
+      let currentWeek = new Date()
+
+      function renderWeek() {
+        const monday = new Date(currentWeek)
+        monday.setDate(monday.getDate() - monday.getDay() + 1)
+        const sunday = new Date(monday)
+        sunday.setDate(monday.getDate() + 6)
+        document.getElementById(
+          'weekTitle'
+        ).textContent = `${monday.getFullYear()}년 ${
+          monday.getMonth() + 1
+        }월 ${monday.getDate()}일 - ${
+          sunday.getMonth() + 1
+        }월 ${sunday.getDate()}일`
+      }
+
+      function renderTimetable() {
+        const tbody = document.getElementById('timetableBody')
+        tbody.innerHTML = ''
+
+        for (let i = 0; i < times.length; i++) {
+          const row = document.createElement('tr')
+          row.innerHTML = `<td class="border px-2 py-3 bg-gray-50 text-center">${
+            i + 1
+          }교시<br>${times[i]}</td>`
+
+          for (let d = 1; d <= 6; d++) {
+            const existingClass = classes.find(
+              (c) => c.day === d && c.period === i
+            )
+            const isContinuation = classes.find(
+              (c) => c.day === d && c.period < i && i < c.period + c.length
+            )
+
+            if (existingClass) {
+              const td = document.createElement('td')
+              td.className =
+                'border px-2 py-3 text-center align-middle bg-blue-100 cursor-pointer hover:bg-blue-200'
+              td.rowSpan = existingClass.length
+              td.innerText = existingClass.name
+              td.onclick = () =>
+                showPopup(existingClass.name, existingClass.detail)
+              row.appendChild(td)
+            } else if (!isContinuation) {
+              row.innerHTML += '<td class="border px-2 py-3"></td>'
+            }
+          }
+
+          tbody.appendChild(row)
+        }
+      }
+
+      function prevWeek() {
+        currentWeek.setDate(currentWeek.getDate() - 7)
+        renderWeek()
+        renderTimetable()
+      }
+
+      function nextWeek() {
+        currentWeek.setDate(currentWeek.getDate() + 7)
+        renderWeek()
+        renderTimetable()
+      }
+
+      function showPopup(title, content) {
+        document.getElementById('popupTitle').textContent = title
+        document.getElementById('popupContent').textContent = content
+        document.getElementById('popup').classList.remove('hidden')
+      }
+
+      function closePopup() {
+        document.getElementById('popup').classList.add('hidden')
+      }
+
+      // 초기 렌더링
+      renderWeek()
+      renderTimetable()
+    </script>
+
+    <!-- 하단 버튼 영역 -->
+    <div class="flex justify-between mt-10 px-4">
+      <a href="index.html" class="back">← 메인으로 돌아가기</a>
+      <a href="major.html" class="back">나의 전공 과목 보기 →</a>
+    </div>
+  </body>
+</html>

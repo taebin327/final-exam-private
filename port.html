@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>개인 포트폴리오</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      header {
+        background-color: #111;
+        color: white;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: #333;
+        border-radius: 4px;
+      }
+
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        height: 3px;
+        width: 25px;
+        background-color: white;
+        margin: 4px 0;
+        border-radius: 2px;
+      }
+
+      @media (max-width: 768px) {
+        nav ul {
+          display: none;
+          position: absolute;
+          top: 70px;
+          right: 20px;
+          background-color: #111;
+          flex-direction: column;
+          width: 200px;
+          border-radius: 8px;
+          padding: 1rem;
+          z-index: 999;
+        }
+
+        nav ul.active {
+          display: flex;
+        }
+
+        .menu-toggle {
+          display: flex;
+        }
+      }
+
+      section {
+        padding: 4rem 2rem;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+      }
+
+      .card a {
+        color: #007acc;
+        text-decoration: none;
+      }
+
+      .card a:hover {
+        text-decoration: underline;
+      }
+
+      footer {
+        background-color: #111;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'ko', // 원본 언어 코드 (예: 한국어는 'ko')
+            includedLanguages: 'en,ja,zh-CN,ko', // 표시할 언어들 (필요한 것만 콤마로 구분)
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          },
+          'google_translate_element'
+        )
+      }
+    </script>
+
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+
+    <header>
+      <h1>개인 포트폴리오</h1>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul id="menu">
+          <li>
+            <a href="index.html" target="_blank" rel="noopener noreferrer"
+              >HOME</a
+            >
+          </li>
+          <li><a href="#intro">소개</a></li>
+          <li><a href="#projects">프로젝트</a></li>
+          <li><a href="#github">GitHub</a></li>
+          <li><a href="#license">자격증</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="intro">
+      <h2>👩‍💻 자기소개</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>개인정보</h3>
+          <p>학번 : 92212790 <br />이름 : 김태빈</p>
+        </div>
+        <div class="card">
+          <h3>Skillset</h3>
+          <p>HTML, CSS, JavaScript, React, GitHub, Vercel</p>
+        </div>
+        <div class="card">
+          <h3>연락처</h3>
+          <p>전화번호 : 010 - 7221 - 7727 <br />이메일 : taebin327@naver.com</p>
+        </div>
+        <div class="card">
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>📁 프로젝트</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3><a href="https://httpdemo-taebin.vercel.app/">과제 1</a></h3>
+          <p>팀구성 및 HCJDemo 홈페이지</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://2htmldemo.vercel.app">과제 2</a></h3>
+          <p>HTML 실습</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://private-homepage-pi.vercel.app/">과제 3</a></h3>
+          <p>중간고사 과제</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://team-project1-indol.vercel.app/">과제 4</a></h3>
+          <p>중간고사 팀 프로젝트</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://final-exam-private.vercel.app/">과제 5</a></h3>
+          <p>기말고사 과제</p>
+        </div>
+        <div class="card">
+          <h3>
+            <a href="https://final-team-project-three.vercel.app/">과제 6</a>
+          </h3>
+          <p>기말고사 팀 프로젝트</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="github">
+      <h2>🔗 GitHub / 프로그래머스</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>GitHub 링크</h3>
+          <p>저의 GitHub 저장소를 방문해보세요:</p>
+          <a href="https://github.com/taebin327" target="_blank"
+            >github.com/taebin327</a
+          >
+        </div>
+        <div class="card">
+          <h3>프로그래머스 링크</h3>
+          <p>프로그래머스 코딩 테스트를 해보세요:</p>
+          <a
+            href="https://programmers.co.kr/users/challenge-activity"
+            target="_blank"
+            >programmers.website</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section id="license">
+      <h2>🪪 자격증</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>IT관련 자격증</h3>
+          <p>네트워크 관리사 2급</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2025 김태빈 | All rights reserved.</footer>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById('menu')
+        menu.classList.toggle('active')
+      }
+    </script>
+  </body>
+</html>
